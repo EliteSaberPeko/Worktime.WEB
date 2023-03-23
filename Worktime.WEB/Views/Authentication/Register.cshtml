@@ -1,0 +1,31 @@
+﻿@model RegisterViewModel
+@{
+    ViewData["Title"] = "Регистрация";
+}
+<div class="outer">
+    <div class="inner container-fluid text-center">
+        <form method="post" asp-antiforgery="true" asp-controller="Authentication" asp-action="Register">
+            <div asp-validation-summary="ModelOnly" class="register-error"></div>
+            <div class="Email">
+                <label asp-for="Email" class="form-label"></label>
+                <div>
+                    <input asp-for="Email" class="form-control" />
+                </div>
+                <span asp-validation-for="Email" class="register-error"></span>
+            </div>
+            <div class="Password">
+                <label asp-for="Password" class="form-label">Пароль</label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="register-error"></span>
+            </div>
+            <div class="PasswordConfirm">
+                <label asp-for="PasswordConfirm" class="form-label">Подтвердите пароль</label>
+                <input asp-for="PasswordConfirm" class="form-control" />
+                <span asp-validation-for="PasswordConfirm" class="register-error"></span>
+            </div>
+            <div>
+                <input type="submit" value="Регистрация" class="button-submit" />
+            </div>
+        </form>
+    </div>
+</div>

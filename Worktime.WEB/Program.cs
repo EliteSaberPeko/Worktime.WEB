@@ -1,9 +1,6 @@
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Npgsql;
+using Worktime.WEB;
 using Worktime.WEB.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,10 +17,17 @@ builder.Services.AddIdentity<User, IdentityRole>(options =>
     options.Password.RequireLowercase = false;
 })
     .AddEntityFrameworkStores<ApplicationDbContext>()
-    .AddSignInManager<SignInManager<User>>();
+    .AddUserManager<AuthUserManager<User>>()
+    .AddSignInManager<SignInManager<User>>()
+    .AddErrorDescriber<AuthIdentityErrorDescriber>();
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = new PathString("/Authentication/Login");
+    options.AccessDeniedPath = new PathString("/Authentication/Login");
+})
+    .AddControllersWithViews();
 
 var app = builder.Build();
 
@@ -40,6 +44,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
