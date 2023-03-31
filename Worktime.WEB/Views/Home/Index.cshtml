@@ -1,8 +1,46 @@
-﻿@{
+﻿@model PageViewModel
+@{
     ViewData["Title"] = "Главная страница";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="inner container-fluid text-center">
+    <span class="" id="ErrorSpan"></span>
+    <div class="row">
+        <div class="col">
+            <label class="form-label">Дата</label>
+        </div>
+        <div class="col">
+            <label class="form-label">Начало</label>
+        </div>
+        <div class="col">
+            <label class="form-label">Окончание</label>
+        </div>
+        <div class="col col__min-width--200">
+            <label class="form-label">Описание</label>
+        </div>
+        <div class="col col__min-width--200">
+            <label class="form-label">Задача</label>
+        </div>
+        <div class="col">
+            <label class="form-label">Время (час)</label>
+        </div>
+        <div class="col">
+            <label class="form-label">Часов всего:</label>
+        </div>
+        <div class="col">
+            <label class="form-label">@Model.TotalTime</label>
+        </div>
+    </div>
+    <partial name="RowPartial" model="@Model.NewRow" />
+    <hr />
+    @foreach(var row in Model.Rows)
+    {
+        <partial name="RowPartial" model="row" />
+    }
 </div>
+
+@section Scripts{
+    <script type="text/javascript">
+        
+    </script>
+}

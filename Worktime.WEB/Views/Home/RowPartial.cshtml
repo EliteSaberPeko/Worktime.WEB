@@ -1,0 +1,58 @@
+﻿@model RowViewModel
+
+<form method="post" asp-antiforgery="true" action="home/index" class="form-inline">
+    <input asp-for="TaskId" hidden />
+    <input asp-for="LineId" hidden />
+    <div class="row mb-3">
+        <div class="col">
+            <div class="col">
+                <input asp-for="Date" type="date" class="form-control" />
+            </div>
+            <div class="col">
+                <span asp-validation-for="Date" class=""></span>
+            </div>
+        </div>
+        <div class="col">
+            <div class="col">
+                <input asp-for="BeginTime" type="time" step="60" class="form-control" />
+            </div>
+            <div class="col">
+                <span asp-validation-for="BeginTime" class=""></span>
+            </div>
+        </div>
+        <div class="col">
+            <div class="col">
+                <input asp-for="EndTime" type="time" step="60" class="form-control" />
+            </div>
+            <div class="col">
+                <span asp-validation-for="EndTime" class=""></span>
+            </div>
+        </div>
+        <div class="col col__min-width--200">
+            <div class="col">
+                <input asp-for="Description" class="form-control" />
+            </div>
+            <div class="col">
+                <span asp-validation-for="Description" class=""></span>
+            </div>
+        </div>
+        <div class="col col__min-width--200">
+            <div class="col">
+                <input asp-for="Name" class="form-control" />
+            </div>
+            <div class="col">
+                <span asp-validation-for="Name" class=""></span>
+            </div>
+        </div>
+        <div class="col">
+            <input asp-for="Time" disabled class="form-control" />
+        </div>
+        <div class="col my-auto">
+            <input asp-for="IsCompleted" class="form-check-input" />
+            <label asp-for="IsCompleted" class="form-check-label">Завершено</label>
+        </div>
+        <div class="col">
+            <input type="button" value="Отправить" onclick="SendRow(this)" class="btn btn-outline-primary" />
+        </div>
+    </div>
+</form>
