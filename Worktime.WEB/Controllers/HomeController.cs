@@ -51,15 +51,15 @@ namespace Worktime.WEB.Controllers
             rows = rows.OrderByDescending(x => x.BeginTime).ToList();
             return rows;
         }
-        private PageViewModel GetPageViewModelOnToday(Guid userId, RowViewModel? rowModel = null) => GetPageViewModelOnDate(userId, DateTime.Today, rowModel);
         private PageViewModel GetPageViewModelOnDate(Guid userId, DateTime date, RowViewModel? rowModel = null)
         {
+            date = date.Date;
             Hours hoursGetter = new(_startup);
             List<RowViewModel> rows = GetListRowViewModelOnDate(userId, date);
             double totalTime = hoursGetter.GetOnThisDay(userId);
-            return GetPageViewModel(rows, totalTime, rowModel);
+            return GetPageViewModel(rows, totalTime, date, rowModel);
         }
-        private PageViewModel GetPageViewModel(List<RowViewModel> rows, double totalTime, RowViewModel? rowModel = null)
+        private PageViewModel GetPageViewModel(List<RowViewModel> rows, double totalTime, DateTime date, RowViewModel? rowModel = null)
         {
             if (rowModel == null)
             {
@@ -68,18 +68,19 @@ namespace Worktime.WEB.Controllers
                 now = now.AddMilliseconds(-now.Millisecond);
                 rowModel = new()
                 {
-                    Date = DateTime.Today,
+                    Date = date,
                     BeginTime = now,
                     EndTime = now
                 };
             }
-            return new() { NewRow = rowModel, Rows = rows, TotalTime = totalTime };
+            return new() { NewRow = rowModel, Rows = rows, TotalTime = totalTime, ViewDate = date };
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(DateTime? ViewDate = null)
         {
+            ViewDate ??= DateTime.Today;
             var user = await GetCurrentUserAsync();
-            var model = GetPageViewModelOnToday(user.WorktimeId);
+            var model = GetPageViewModelOnDate(user.WorktimeId, (DateTime)ViewDate);
             return View(model);
         }
 
@@ -91,8 +92,6 @@ namespace Worktime.WEB.Controllers
             var task = _startup.ReadAsIEnumerable(user.WorktimeId).FirstOrDefault(x => x.Id == model.TaskId || x.Name == model.Name);
             if (task != null)
                 model.TaskId = task.Id;
-
-            PageViewModel pageModel;
 
             if (ModelState.IsValid)
             {
@@ -144,12 +143,10 @@ namespace Worktime.WEB.Controllers
                     if (!result.Success)
                         return StatusCode((int)HttpStatusCode.InternalServerError, result.Message);
                 }
-                pageModel = GetPageViewModelOnToday(user.WorktimeId);
                 return StatusCode((int)HttpStatusCode.OK);
             }
             else
             {
-                pageModel = GetPageViewModelOnToday(user.WorktimeId, model);
                 Response.StatusCode = (int)HttpStatusCode.PartialContent;
                 return PartialView("RowPartial", model);
             }

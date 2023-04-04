@@ -2,7 +2,15 @@
 @{
     ViewData["Title"] = "Главная страница";
 }
-
+<div class="mx-auto">
+    <form method="get" asp-controller="Home" asp-action="Index" class="form-inline">
+        <div class="input-group mb-3">
+            <label class="input-group-text" asp-for="ViewDate">Отображено на</label>
+            <input type="date" asp-for="ViewDate" class="form-control" />
+            <input type="submit" value="Изменить" class="btn btn-outline-secondary" />
+        </div>
+    </form>
+</div>
 <div class="inner container-fluid text-center">
     <span class="" id="ErrorSpan"></span>
     <div class="row">
@@ -41,6 +49,8 @@
 
 @section Scripts{
     <script type="text/javascript">
-        
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('ViewDate').addEventListener('change', debounce(SendDate, 1000));
+        });
     </script>
 }

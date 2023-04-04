@@ -19,3 +19,24 @@ async function SendRow(elem) {
         location.reload();
     }
 }
+
+function debounce(func, ms, now) {
+    let onLast;
+    return () => {
+        const context = this;
+        const args = arguments;
+        const onFirst = now && !onLast;
+        clearTimeout(onLast);
+        onLast = setTimeout(() => {
+            onLast = null;
+            if (!now) func.apply(context, args);
+        }, ms);
+        if (onFirst) func.apply(context, args);
+    };
+}
+
+function SendDate() {
+    let elem = document.getElementById('ViewDate');
+    let date = elem.value;
+    location.href = '?ViewDate=' + date;
+}
