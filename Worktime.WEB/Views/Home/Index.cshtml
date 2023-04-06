@@ -51,6 +51,7 @@
     <script type="text/javascript">
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('ViewDate').addEventListener('change', debounce(SendDate, 1000));
+            AddEventListenerByName('Name', 'input', debounce(SendName, 1000));
         });
     </script>
 }

@@ -3,6 +3,7 @@
 <form method="post" asp-antiforgery="true" action="home/index" class="form-inline">
     <input asp-for="TaskId" hidden />
     <input asp-for="LineId" hidden />
+    <input asp-for="Index" hidden />
     <div class="row mb-3">
         <div class="col">
             <div class="col">
@@ -38,14 +39,15 @@
         </div>
         <div class="col col__min-width--200">
             <div class="col">
-                <input asp-for="Name" class="form-control" />
+                <input asp-for="Name" list="datalist_@Model.Index" class="form-control" autocomplete="off" />
+                <datalist id="datalist_@Model.Index"></datalist>
             </div>
             <div class="col">
                 <span asp-validation-for="Name" class=""></span>
             </div>
         </div>
         <div class="col">
-            <input asp-for="Time" disabled class="form-control" />
+            <input asp-for="Time" readonly="readonly" class="form-control" />
         </div>
         <div class="col my-auto">
             <input asp-for="IsCompleted" class="form-check-input" />
