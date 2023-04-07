@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Worktime.Core;
 using Worktime.WEB;
 using Worktime.WEB.Models;
 
@@ -26,8 +28,11 @@ builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = new PathString("/Authentication/Login");
     options.AccessDeniedPath = new PathString("/Authentication/Login");
+    options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
 })
     .AddControllersWithViews();
+
+builder.Services.AddTransient<Startup>();
 
 var app = builder.Build();
 

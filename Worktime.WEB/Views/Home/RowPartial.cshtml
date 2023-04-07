@@ -1,0 +1,51 @@
+﻿@model RowViewModel
+
+<form method="post" asp-antiforgery="true" action="home/index" id="form_@Model.Index" class="form-inline"></form>
+<tr class="align-middle">
+    <th scope="row">
+        <input asp-for="Date" type="date" class="form-control" form="form_@Model.Index" />
+        <span class="error_span error_Date"></span>
+        <input asp-for="TaskId" form="form_@Model.Index" hidden />
+        <input asp-for="LineId" form="form_@Model.Index" hidden />
+        <input asp-for="Index" form="form_@Model.Index" hidden />
+    </th>
+    <td>
+        <input asp-for="BeginTime" type="time" step="60" class="form-control" form="form_@Model.Index" />
+        <span class="error_span error_BeginTime"></span>
+    </td>
+    <td>
+        <input asp-for="EndTime" type="time" step="60" class="form-control" form="form_@Model.Index" />
+        <span class="error_span error_EndTime"></span>
+    </td>
+    <td>
+        <input asp-for="Name" list="datalist_@Model.Index" class="form-control" autocomplete="off" form="form_@Model.Index" />
+        <datalist id="datalist_@Model.Index"></datalist>
+        <span class="error_span error_Name"></span>
+    </td>
+    <td>
+        <input asp-for="Description" class="form-control" form="form_@Model.Index" />
+        <span class="error_span error_Description"></span>
+    </td>
+    <td>
+        <input asp-for="Time" readonly="readonly" class="form-control" form="form_@Model.Index" />
+    </td>
+    <td>
+        <input asp-for="IsCompleted" class="form-check-input" form="form_@Model.Index" />
+        <label asp-for="IsCompleted" class="form-check-label">Завершено</label>
+    </td>
+    @if (Model.Index == 0)
+    {
+        <td colspan="2">
+            <input type="button" value="Создать" onclick="SendRow(this)" class="btn btn-outline-primary" form="form_@Model.Index" />
+        </td>
+    }
+    else
+    {
+        <td>
+            <input type="button" value="Изменить" onclick="SendRow(this)" class="btn btn-outline-success" form="form_@Model.Index" />
+        </td>
+        <td>
+            <input type="button" value="Удалить" onclick="DeleteRow(this)" class="btn btn-outline-danger" form="form_@Model.Index" />
+        </td>
+    }
+</tr>
