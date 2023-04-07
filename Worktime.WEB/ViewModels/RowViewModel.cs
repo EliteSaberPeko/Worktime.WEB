@@ -6,7 +6,8 @@ namespace Worktime.WEB.ViewModels
     {
         public int Index { get; set; }
         public int TaskId { get; set; }
-        [Required]
+
+        [Required(ErrorMessage = "Задача необходима!")]
         public string Name { get; set; } = null!;
         public string? Description { get; set; }
         public double TotalTime { get; set; }

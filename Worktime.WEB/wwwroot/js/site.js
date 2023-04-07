@@ -1,19 +1,31 @@
 ﻿"use strict";
 
 async function SendRow(elem) {
-    let form = elem.closest('form');
+    let form = elem.form;
+    let errorElements = elem.closest('tr').querySelectorAll('.error_span');
+    let span500error = document.querySelector('.error_500');
+    for (let el of errorElements) {
+        el.textContent = '';
+    }
+    span500error.textContent = '';
     let response = await fetch(form.action, {
         method: 'post',
         body: new FormData(form)
     });
-    let text = await response.text();
-    let errorElem = document.getElementById('ErrorSpan');
     if (response.status === 206) {
-        errorElem.textContent = '';
-        form.innerHTML = text;
+        let text = await response.json();
+        var dataArray = JSON.parse(text);
+        if (JSON.stringify(dataArray) == JSON.stringify({}))
+            return;
+
+        for (let key of dataArray) {
+            let span = elem.closest('tr').querySelector(`.error_${key.Name}`);
+            span.textContent = key.Message;
+        }
     }
     else if (response.status === 500) {
-        document.getElementById('ErrorSpan').textContent = text;
+        let text = await response.text();
+        span500error.textContent = text;
     }
     else {
         location.reload();
@@ -44,7 +56,7 @@ async function SendName() {
     let nameElement = this;
     let inputName = nameElement.value;
     let found = false;
-    let description = nameElement.closest('form').querySelector('#Description');
+    let description = nameElement.closest('tr').querySelector('#Description');
     let listOptions = nameElement.nextElementSibling.options;
     for (let item of listOptions) {
         if (inputName === item.innerText) {

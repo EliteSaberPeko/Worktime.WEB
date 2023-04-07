@@ -12,39 +12,30 @@
     </form>
 </div>
 <div class="inner container-fluid text-center">
-    <span class="" id="ErrorSpan"></span>
-    <div class="row">
-        <div class="col">
-            <label class="form-label">Дата</label>
-        </div>
-        <div class="col">
-            <label class="form-label">Начало</label>
-        </div>
-        <div class="col">
-            <label class="form-label">Окончание</label>
-        </div>
-        <div class="col col__min-width--200">
-            <label class="form-label">Описание</label>
-        </div>
-        <div class="col col__min-width--200">
-            <label class="form-label">Задача</label>
-        </div>
-        <div class="col">
-            <label class="form-label">Время (час)</label>
-        </div>
-        <div class="col">
-            <label class="form-label">Часов всего:</label>
-        </div>
-        <div class="col">
-            <label class="form-label">@Model.TotalTime</label>
-        </div>
+    <span class="error_span error_500"></span>
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr class="align-middle">
+                    <th scope="col">Дата</th>
+                    <th scope="col">Начало</th>
+                    <th scope="col">Окончание</th>
+                    <th scope="col" class="col__min-width--200">Задача</th>
+                    <th scope="col" class="col__min-width--200">Описание</th>
+                    <th scope="col">Время (час)</th>
+                    <th scope="col" colspan="2">Часов всего:</th>
+                    <th scope="col">@Model.TotalTime</th>
+                </tr>
+                <partial name="RowPartial" model="@Model.NewRow" />
+            </thead>
+            <tbody>
+                @foreach (var row in Model.Rows)
+                {
+                    <partial name="RowPartial" model="row" />
+                }
+            </tbody>
+        </table>
     </div>
-    <partial name="RowPartial" model="@Model.NewRow" />
-    <hr />
-    @foreach(var row in Model.Rows)
-    {
-        <partial name="RowPartial" model="row" />
-    }
 </div>
 
 @section Scripts{

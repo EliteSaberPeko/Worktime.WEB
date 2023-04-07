@@ -104,8 +104,17 @@ namespace Worktime.WEB.Controllers
             }
             else
             {
+                List<ErrorJsonModel> errors = new();
+                var state = ModelState.Where(x => x.Value?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid);
+                foreach(var item in state)
+                {
+                    string name = item.Key;
+                    string message = item.Value?.Errors.FirstOrDefault()?.ErrorMessage ?? string.Empty;
+                    errors.Add(new() { Message = message, Name = name });
+                }
                 Response.StatusCode = (int)HttpStatusCode.PartialContent;
-                return PartialView("RowPartial", model);
+                string json = JsonSerializer.Serialize(errors);
+                return new JsonResult(json);
             }
         }
 
