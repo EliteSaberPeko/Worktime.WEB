@@ -92,3 +92,22 @@ function AddEventListenerByName(name, event, func) {
         elem.addEventListener(event, func);
     }
 }
+
+async function DeleteRow(elem) {
+    let isConfirm = confirm('Вы действительно хотите удалить строку?');
+    if (!isConfirm)
+        return;
+
+    let form = elem.form;
+    let response = await fetch('/home/delete', {
+        method: 'post',
+        body: new FormData(form)
+    });
+    if (response.status === 500) {
+        let text = await response.text();
+        document.querySelector('.error_500').textContent = text;
+    }
+    else {
+        location.reload();
+    }
+}

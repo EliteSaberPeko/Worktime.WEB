@@ -132,6 +132,21 @@ namespace Worktime.WEB.Controllers
             return new JsonResult(json);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(RowViewModel model)
+        {
+            var user = await GetCurrentUserAsync();
+            var line = _startup.ReadAsIEnumerable(model.TaskId).FirstOrDefault(x => x.Id == model.LineId);
+            if (line == null)
+                return StatusCode((int)HttpStatusCode.InternalServerError, "Line was not found!");
+            var result = _startup.Delete(line);
+            if(!result.Success)
+                return StatusCode((int)HttpStatusCode.InternalServerError, result.Message);
+
+            return StatusCode((int)HttpStatusCode.OK);
+        }
+
         public IActionResult Privacy()
         {
             return View();
