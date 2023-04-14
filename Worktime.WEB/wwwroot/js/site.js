@@ -66,7 +66,7 @@ async function SendName() {
         }
     }
     if (inputName) {
-        let response = await fetch('/Home/ShowTasks?' + new URLSearchParams({ name: inputName }));
+        let response = await fetch('/Search/Tasks?' + new URLSearchParams({ name: inputName }));
         let data = await response.json();
         var dataArray = JSON.parse(data);
         nameElement.nextElementSibling.innerHTML = '';
@@ -79,8 +79,8 @@ async function SendName() {
 
         for (let key of dataArray) {
             var option = document.createElement('option');
-            option.textContent = key.Name;
-            option.setAttribute("data-description", key.Description);
+            option.textContent = key.Text;
+            option.setAttribute("data-description", key.DataValue);
             nameElement.nextElementSibling.appendChild(option);
         }
     }
@@ -110,4 +110,48 @@ async function DeleteRow(elem) {
     else {
         location.reload();
     }
+}
+
+async function GetSearchList() {
+    let form = this.form;
+    let found = false;
+    //let idElement = document.querySelector('#searchId');
+    let listOptions = this.nextElementSibling.options;
+    for (let item of listOptions) {
+        if (this.value === item.innerText) {
+            //idElement.value = item.dataset.id;
+            found = true;
+            break;
+        }
+    }
+    //if (!found)
+        //idElement.value = 0;
+
+    let response = await fetch('/Search/Datalist', {
+        method: 'post',
+        body: new FormData(form)
+    });
+    if (response.status === 500) {
+        let text = await response.text();
+        document.querySelector('.error_500').textContent = text;
+    }
+    else {
+        let data = await response.json();
+        var dataArray = JSON.parse(data);
+        this.nextElementSibling.innerHTML = '';
+
+        if (JSON.stringify(dataArray) == JSON.stringify({}))
+            return;
+
+        if (found && dataArray.length === 1)
+            return;
+
+        for (let key of dataArray) {
+            var option = document.createElement('option');
+            option.textContent = key.Text;
+            option.setAttribute("data-id", key.DataValue);
+            this.nextElementSibling.appendChild(option);
+        }
+    }
+    
 }

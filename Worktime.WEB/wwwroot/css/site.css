@@ -17,6 +17,6 @@ body {
   margin-bottom: 60px;
 }
 
-.col__min-width--200{
-    min-width:200px;
+.col__min-width--150{
+    min-width:150px !important;
 }

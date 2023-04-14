@@ -36,16 +36,16 @@
     @if (Model.Index == 0)
     {
         <td colspan="2">
-            <input type="button" value="Создать" onclick="SendRow(this)" class="btn btn-outline-primary" form="form_@Model.Index" />
+            <input type="button" value="Создать" onclick="SendRow(this)" class="btn btn-outline-primary rounded-3" form="form_@Model.Index" />
         </td>
     }
     else
     {
         <td>
-            <input type="button" value="Изменить" onclick="SendRow(this)" class="btn btn-outline-success" form="form_@Model.Index" />
+            <input type="button" value="✓" onclick="SendRow(this)" class="btn btn-outline-success rounded-3" form="form_@Model.Index" />
         </td>
         <td>
-            <input type="button" value="Удалить" onclick="DeleteRow(this)" class="btn btn-outline-danger" form="form_@Model.Index" />
+            <input type="button" value="✘" onclick="DeleteRow(this)" class="btn btn-outline-danger rounded-3" form="form_@Model.Index" />
         </td>
     }
 </tr>

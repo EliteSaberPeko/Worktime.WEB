@@ -1,0 +1,9 @@
+﻿@model SearchListViewModel
+@{
+    ViewData["Title"] = "Список задач";
+}
+@foreach(var task in Model.Tasks){
+    <div class="mb-3">
+        <a asp-controller="Home" asp-action="Index" asp-route-task="@task.Id" class="btn btn-outline-dark">@task.Name | @task.Description</a>
+    </div>
+}

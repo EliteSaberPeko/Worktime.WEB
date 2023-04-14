@@ -2,6 +2,23 @@
 @{
     ViewData["Title"] = "Главная страница";
 }
+
+<form method="post" asp-controller="Search" asp-action="List" id="searchForm" class="form-inline">
+    <div class="input-group mb-3 justify-content-center">
+        <div class="btn-group" role="group">
+            <input type="radio" class="btn-check" name="searchType" id="searchTypeName" autocomplete="off" value="@SearchType.Name" checked>
+            <label class="btn btn-outline-secondary" for="searchTypeName">Задачи</label>
+
+            <input type="radio" class="btn-check" name="searchType" id="searchTypeDescription" autocomplete="off" value="@SearchType.Description">
+            <label class="btn btn-outline-secondary rounded-0" for="searchTypeDescription">Описания</label>
+        </div>
+        @*<input type="text" id="searchId" name="searchId" hidden />*@
+        <input type="text" id="search" name="search" list="searchDatalist" placeholder="Поиск" autocomplete="off" class="form-control col__min-width--150" />
+        <datalist id="searchDatalist"></datalist>
+        <input type="submit" value="Найти" class="btn btn-outline-warning text-black" />
+    </div>
+</form>
+
 <div class="mx-auto">
     <form method="get" asp-controller="Home" asp-action="Index" class="form-inline">
         <div class="input-group mb-3">
@@ -15,20 +32,20 @@
     <span class="error_span error_500"></span>
     <div class="table-responsive">
         <table class="table table-hover">
-            <thead>
+            <thead class="table__horizontal-margin--1">
                 <tr class="align-middle">
                     <th scope="col">Дата</th>
                     <th scope="col">Начало</th>
                     <th scope="col">Окончание</th>
-                    <th scope="col" class="col__min-width--200">Задача</th>
-                    <th scope="col" class="col__min-width--200">Описание</th>
+                    <th scope="col" class="col__min-width--150">Задача</th>
+                    <th scope="col" class="col__min-width--150">Описание</th>
                     <th scope="col">Время (час)</th>
                     <th scope="col" colspan="2">Часов всего:</th>
                     <th scope="col">@Model.TotalTime</th>
                 </tr>
                 <partial name="RowPartial" model="@Model.NewRow" />
             </thead>
-            <tbody>
+            <tbody class="table__horizontal-margin--1">
                 @foreach (var row in Model.Rows)
                 {
                     <partial name="RowPartial" model="row" />
@@ -42,6 +59,7 @@
     <script type="text/javascript">
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('ViewDate').addEventListener('change', debounce(SendDate, 1000));
+            document.getElementById('search').addEventListener('input', debounce(GetSearchList, 1000));
             AddEventListenerByName('Name', 'input', debounce(SendName, 1000));
         });
     </script>
