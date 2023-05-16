@@ -16,7 +16,7 @@
             @foreach(var task in Model.Tasks)
             {
                 <tr class="table__link" data-task="@task.Name">
-                    <td class="tasks__title">@task.Name</td>
+                    <td class="tasks__identifier">@task.Name</td>
                     <td class="tasks__name">@task.Description</td>
                 </tr>
             }
