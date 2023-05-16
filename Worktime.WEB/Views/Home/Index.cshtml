@@ -3,34 +3,24 @@
     ViewData["Title"] = "Главная страница";
 }
 
-<form method="post" asp-controller="Search" asp-action="List" id="searchForm" class="form-inline">
-    <div class="input-group mb-3 justify-content-center">
-        <div class="btn-group" role="group">
-            <input type="radio" class="btn-check" name="searchType" id="searchTypeName" autocomplete="off" value="@SearchType.Name" checked>
-            <label class="btn btn-outline-secondary" for="searchTypeName">Задачи</label>
+<partial name="SearchFormPartial" />
 
-            <input type="radio" class="btn-check" name="searchType" id="searchTypeDescription" autocomplete="off" value="@SearchType.Description">
-            <label class="btn btn-outline-secondary rounded-0" for="searchTypeDescription">Описания</label>
-        </div>
-        @*<input type="text" id="searchId" name="searchId" hidden />*@
-        <input type="text" id="search" name="search" list="searchDatalist" placeholder="Поиск" autocomplete="off" class="form-control col__min-width--150" />
-        <datalist id="searchDatalist"></datalist>
-        <input type="submit" value="Найти" class="btn btn-outline-warning text-black" />
-    </div>
-</form>
-
-<div class="mx-auto">
+<div class="background--white mx-auto view-date--shadow">
     <form method="get" asp-controller="Home" asp-action="Index" class="form-inline">
-        <div class="input-group mb-3">
-            <label class="input-group-text" asp-for="ViewDate">Отображено на</label>
+        <div class="input-group mb-5">
+            <label class="input-group-text" asp-for="ViewDate">Дата</label>
             <input type="date" asp-for="ViewDate" class="form-control" />
-            <input type="submit" value="Изменить" class="btn btn-outline-secondary" />
+            <label class="input-group-text" asp-for="ViewTaskName">Задача</label>
+            <input type="text" name="searchType" id="searchTypeViewName" value="@SearchType.Name" hidden />
+            <input type="search" asp-for="ViewTaskName" list="filterTasks" autocomplete="off" class="form-control" />
+            <datalist id="filterTasks"></datalist>
+            <input type="submit" value="Отобразить" class="btn btn-outline-dark" />
         </div>
     </form>
 </div>
-<div class="inner container-fluid text-center">
+<div class="background--white inner container-fluid text-center">
     <span class="error_span error_500"></span>
-    <div class="table-responsive">
+    <div class="table-responsive table-content--shadow">
         <table class="table table-hover">
             <thead class="table__horizontal-margin--1">
                 <tr class="align-middle">
@@ -39,7 +29,7 @@
                     <th scope="col">Окончание</th>
                     <th scope="col" class="col__min-width--150">Задача</th>
                     <th scope="col" class="col__min-width--150">Описание</th>
-                    <th scope="col">Время (час)</th>
+                    <th scope="col" class="col__min-width--70">Время (час)</th>
                     <th scope="col" colspan="2">Часов всего:</th>
                     <th scope="col">@Model.TotalTime</th>
                 </tr>
@@ -57,10 +47,6 @@
 
 @section Scripts{
     <script type="text/javascript">
-        document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('ViewDate').addEventListener('change', debounce(SendDate, 1000));
-            document.getElementById('search').addEventListener('input', debounce(GetSearchList, 1000));
-            AddEventListenerByName('Name', 'input', debounce(SendName, 1000));
-        });
+        HomeIndexEvents();
     </script>
 }

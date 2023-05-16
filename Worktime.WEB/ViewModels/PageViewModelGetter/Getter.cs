@@ -8,11 +8,22 @@ namespace Worktime.WEB.ViewModels.PageViewModelGetter
         protected Startup _startup;
         protected DateTime _date;
         protected Guid _userId;
-        public Getter(Startup startup, Guid userId, DateTime? date = null)
+        protected int _taskId;
+        protected readonly string _taskName = string.Empty;
+        public Getter(Startup startup, Guid userId, DateTime? date = null, string taskName = "")
         {
             _startup = startup;
             _userId = userId;
             _date = date == null ? DateTime.Today : (DateTime)date;
+            if (!string.IsNullOrWhiteSpace(taskName))
+            {
+                var task = startup.ReadAsIEnumerable(userId).FirstOrDefault(x => x.Name.ToLower().Equals(taskName.ToLower()));
+                if(task != null)
+                {
+                    _taskName = task.Name;
+                    _taskId = task.Id;
+                }
+            }
         }
         private List<RowViewModel> GetListRowViewModel(List<WTTask> tasks, List<WTLine> lines)
         {
@@ -49,7 +60,7 @@ namespace Worktime.WEB.ViewModels.PageViewModelGetter
 
             double totalTime = GetTotalTime();
             newRow = GetNewRow(date, newRow);
-            return new ViewModels.PageViewModel(newRow, rows, totalTime, date);
+            return new ViewModels.PageViewModel(newRow, rows, totalTime, date, _taskName);
         }
         private RowViewModel GetNewRow(DateTime date, RowViewModel? newRow)
         {

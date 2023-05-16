@@ -2,8 +2,31 @@
 @{
     ViewData["Title"] = "Список задач";
 }
-@foreach(var task in Model.Tasks){
-    <div class="mb-3">
-        <a asp-controller="Home" asp-action="Index" asp-route-task="@task.Id" class="btn btn-outline-dark">@task.Name | @task.Description</a>
-    </div>
+
+<partial name="SearchFormPartial" />
+
+<div class="tasks__container">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th colspan="2" class="tasks__title">Задачи</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var task in Model.Tasks)
+            {
+                <tr class="table__link" data-task="@task.Name">
+                    <td class="tasks__title">@task.Name</td>
+                    <td class="tasks__name">@task.Description</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+        RedirectToTaskEvent();
+        SearchFormEvent();
+    </script>
 }

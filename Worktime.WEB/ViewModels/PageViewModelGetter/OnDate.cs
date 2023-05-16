@@ -23,7 +23,7 @@ namespace Worktime.WEB.ViewModels.PageViewModelGetter
         public override double GetTotalTime()
         {
             Hours hoursGetter = new(_startup);
-            return hoursGetter.GetOnThisDay(_userId);
+            return hoursGetter.GetOnDay(_userId, _date);
         }
     }
 }

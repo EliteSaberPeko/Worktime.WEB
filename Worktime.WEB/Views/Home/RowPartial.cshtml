@@ -1,51 +1,69 @@
 ﻿@model RowViewModel
-
-<form method="post" asp-antiforgery="true" action="home/index" id="form_@Model.Index" class="form-inline"></form>
-<tr class="align-middle">
+@{
+    string rowCss = "align-middle";
+    if (Model.Index != 0)
+        rowCss += " row--border-bottom";
+    if (Model.IsCompleted)
+        rowCss += " success-gradient";
+}
+<form method="post" asp-antiforgery="true" asp-action="Index" asp-controller="Home" id="form_@Model.Index" class="form-inline"></form>
+<tr class="@rowCss">
     <th scope="row">
-        <input asp-for="Date" type="date" class="form-control" form="form_@Model.Index" />
-        <span class="error_span error_Date"></span>
-        <input asp-for="TaskId" form="form_@Model.Index" hidden />
-        <input asp-for="LineId" form="form_@Model.Index" hidden />
-        <input asp-for="Index" form="form_@Model.Index" hidden />
+        <div class="row__element--shadow">
+            <input asp-for="Date" type="date" class="form-control" form="form_@Model.Index" />
+            <span class="error_span error_Date"></span>
+            <input asp-for="TaskId" form="form_@Model.Index" hidden />
+            <input asp-for="LineId" form="form_@Model.Index" hidden />
+            <input asp-for="Index" form="form_@Model.Index" hidden />
+        </div>
     </th>
     <td>
-        <input asp-for="BeginTime" type="time" step="60" class="form-control" form="form_@Model.Index" />
-        <span class="error_span error_BeginTime"></span>
+        <div class="row__element--shadow">
+            <input asp-for="BeginTime" type="time" step="60" class="form-control" form="form_@Model.Index" />
+            <span class="error_span error_BeginTime"></span>
+        </div>
     </td>
     <td>
-        <input asp-for="EndTime" type="time" step="60" class="form-control" form="form_@Model.Index" />
-        <span class="error_span error_EndTime"></span>
+        <div class="row__element--shadow">
+            <input asp-for="EndTime" type="time" step="60" class="form-control" form="form_@Model.Index" />
+            <span class="error_span error_EndTime"></span>
+        </div>
     </td>
     <td>
-        <input asp-for="Name" list="datalist_@Model.Index" class="form-control" autocomplete="off" form="form_@Model.Index" />
-        <datalist id="datalist_@Model.Index"></datalist>
-        <span class="error_span error_Name"></span>
+        <div class="row__element--shadow">
+            <input asp-for="Name" list="datalist_@Model.Index" class="form-control" autocomplete="off" form="form_@Model.Index" />
+            <datalist id="datalist_@Model.Index"></datalist>
+            <span class="error_span error_Name"></span>
+        </div>
     </td>
     <td>
-        <input asp-for="Description" class="form-control" form="form_@Model.Index" />
-        <span class="error_span error_Description"></span>
+        <div class="row__element--shadow">
+            <input asp-for="Description" class="form-control" form="form_@Model.Index" />
+            <span class="error_span error_Description"></span>
+        </div>
     </td>
     <td>
-        <input asp-for="Time" readonly="readonly" class="form-control" form="form_@Model.Index" />
+        <div class="row__element--shadow"><input asp-for="Time" readonly="readonly" class="form-control" form="form_@Model.Index" /></div>
     </td>
     <td>
-        <input asp-for="IsCompleted" class="form-check-input" form="form_@Model.Index" />
-        <label asp-for="IsCompleted" class="form-check-label">Завершено</label>
+        <div class="row__element--shadow">
+            <input asp-for="IsCompleted" id="IsCompleted_@Model.Index" class="form-check-input" form="form_@Model.Index" />
+            <label for="IsCompleted_@Model.Index" class="form-check-label">Завершено</label>
+        </div>
     </td>
     @if (Model.Index == 0)
     {
         <td colspan="2">
-            <input type="button" value="Создать" onclick="SendRow(this)" class="btn btn-outline-primary rounded-3" form="form_@Model.Index" />
+            <input type="button" value="Создать" onclick="SendRow(this)" class="btn btn-outline-primary rounded-3 row__element--shadow" form="form_@Model.Index" />
         </td>
     }
     else
     {
         <td>
-            <input type="button" value="✓" onclick="SendRow(this)" class="btn btn-outline-success rounded-3" form="form_@Model.Index" />
+            <input type="button" value="✓" onclick="SendRow(this)" class="btn btn-outline-success rounded-3 row__element--shadow" form="form_@Model.Index" />
         </td>
         <td>
-            <input type="button" value="✘" onclick="DeleteRow(this)" class="btn btn-outline-danger rounded-3" form="form_@Model.Index" />
+            <input type="button" value="✘" onclick="DeleteRow(this)" class="btn btn-outline-danger rounded-3 row__element--shadow" form="form_@Model.Index" />
         </td>
     }
 </tr>

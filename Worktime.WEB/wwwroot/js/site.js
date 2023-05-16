@@ -114,18 +114,17 @@ async function DeleteRow(elem) {
 
 async function GetSearchList() {
     let form = this.form;
+    if (form.querySelector('[type="search"]').value.length < 1)
+        return;
     let found = false;
-    //let idElement = document.querySelector('#searchId');
-    let listOptions = this.nextElementSibling.options;
+    let datalist = form.querySelector('datalist');
+    let listOptions = datalist.options;
     for (let item of listOptions) {
         if (this.value === item.innerText) {
-            //idElement.value = item.dataset.id;
             found = true;
             break;
         }
     }
-    //if (!found)
-        //idElement.value = 0;
 
     let response = await fetch('/Search/Datalist', {
         method: 'post',
@@ -138,7 +137,7 @@ async function GetSearchList() {
     else {
         let data = await response.json();
         var dataArray = JSON.parse(data);
-        this.nextElementSibling.innerHTML = '';
+        datalist.innerHTML = '';
 
         if (JSON.stringify(dataArray) == JSON.stringify({}))
             return;
@@ -150,8 +149,39 @@ async function GetSearchList() {
             var option = document.createElement('option');
             option.textContent = key.Text;
             option.setAttribute("data-id", key.DataValue);
-            this.nextElementSibling.appendChild(option);
+            datalist.appendChild(option);
         }
     }
     
+}
+
+function redirectToTask() {
+    let task = this.dataset.task;
+    window.location.replace("/?" + new URLSearchParams({ ViewTaskName: task }));
+}
+
+async function HomeIndexEvents() {
+    document.addEventListener('DOMContentLoaded', () => {
+        //document.getElementById('ViewDate').addEventListener('change', debounce(SendDate, 1000));
+        document.getElementById('ViewTaskName').addEventListener('input', debounce(GetSearchList, 500));
+        AddEventListenerByName('Name', 'input', debounce(SendName, 1000));
+    });
+    SearchFormEvent();
+}
+
+async function RedirectToTaskEvent() {
+    document.addEventListener('DOMContentLoaded', () => {
+        let elements = document.getElementsByClassName("table__link");
+        for (let element of elements)
+            element.addEventListener('click', redirectToTask);
+    });
+}
+
+async function SearchFormEvent() {
+    document.addEventListener('DOMContentLoaded', () => {
+        document.getElementById('searchRequest').addEventListener('input', debounce(GetSearchList, 1000));
+        let aaa = document.querySelectorAll('[type="radio"][name="searchType"]');
+        for (let i of aaa)
+            i.addEventListener('click', GetSearchList);
+    });
 }

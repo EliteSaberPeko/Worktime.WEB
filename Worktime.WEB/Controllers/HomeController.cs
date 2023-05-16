@@ -27,13 +27,12 @@ namespace Worktime.WEB.Controllers
             _startup = startup;
         }
 
-        public async Task<IActionResult> Index(DateTime? ViewDate = null, int task = 0)
+        public async Task<IActionResult> Index(DateTime? ViewDate = null, string ViewTaskName = "")
         {
-            ViewDate ??= DateTime.Today;
             var user = await GetCurrentUserAsync();
-            PageViewModel model = task != 0
-                ? new ViewModels.PageViewModelGetter.FromTask(_startup, user.WorktimeId, task).Get()
-                : new ViewModels.PageViewModelGetter.OnDate(_startup, user.WorktimeId, ViewDate).Get();
+            PageViewModel model = string.IsNullOrWhiteSpace(ViewTaskName) ?
+                new ViewModels.PageViewModelGetter.OnDate(_startup, user.WorktimeId, ViewDate ?? DateTime.Today).Get() :
+                new ViewModels.PageViewModelGetter.FromTask(_startup, user.WorktimeId, ViewTaskName, ViewDate).Get();
             return View(model);
         }
 

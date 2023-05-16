@@ -34,8 +34,8 @@ namespace Worktime.WEB.Controllers
             SearchListViewModel model = new(_startup, user.WorktimeId, searchType, search);
             if (model.Tasks.Count == 1)
             {
-                int task = model.Tasks.First().Id;
-                return RedirectToAction("Index", "Home", new { task });
+                string ViewTaskName = model.Tasks.First().Name;
+                return RedirectToAction("Index", "Home", new { ViewTaskName });
             }
             return View(model);
         }
