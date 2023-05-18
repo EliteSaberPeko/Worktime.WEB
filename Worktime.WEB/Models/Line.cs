@@ -35,6 +35,7 @@ namespace Worktime.WEB.Models
             line.BeginTime = model.BeginTime;
             line.EndTime = model.EndTime;
             line.Date = model.Date;
+            line.Description = model.Description;
             var result = startup.Update(line);
             return result;
         }
@@ -44,6 +45,7 @@ namespace Worktime.WEB.Models
             {
                 WTTaskId = task.Id,
                 Task = task,
+                Description = model.Description,
                 Date = model.Date,
                 BeginTime = model.BeginTime,
                 EndTime = model.EndTime

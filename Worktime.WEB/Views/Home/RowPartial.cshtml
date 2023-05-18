@@ -31,15 +31,15 @@
     </td>
     <td>
         <div class="row__element--shadow">
-            <input asp-for="Name" list="datalist_@Model.Index" class="form-control" autocomplete="off" form="form_@Model.Index" />
+            <input asp-for="Identifier" list="datalist_@Model.Index" class="form-control" autocomplete="off" form="form_@Model.Index" />
             <datalist id="datalist_@Model.Index"></datalist>
-            <span class="error_span error_Name"></span>
+            <span class="error_span error_@nameof(Model.Identifier)"></span>
         </div>
     </td>
     <td>
         <div class="row__element--shadow">
-            <input asp-for="Description" class="form-control" form="form_@Model.Index" />
-            <span class="error_span error_Description"></span>
+            <input asp-for="Title" class="form-control" form="form_@Model.Index" />
+            <span class="error_span error_@nameof(Model.Title)"></span>
         </div>
     </td>
     <td>

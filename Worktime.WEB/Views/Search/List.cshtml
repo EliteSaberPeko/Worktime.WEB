@@ -15,9 +15,9 @@
         <tbody>
             @foreach(var task in Model.Tasks)
             {
-                <tr class="table__link" data-task="@task.Name">
-                    <td class="tasks__identifier">@task.Name</td>
-                    <td class="tasks__name">@task.Description</td>
+                <tr class="table__link" data-task="@task.Identifier">
+                    <td class="tasks__identifier">@task.Identifier</td>
+                    <td class="tasks__name">@task.Title</td>
                 </tr>
             }
         </tbody>

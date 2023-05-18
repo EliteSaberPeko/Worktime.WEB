@@ -10,9 +10,9 @@
         <div class="input-group mb-5">
             <label class="input-group-text" asp-for="ViewDate">Дата</label>
             <input type="date" asp-for="ViewDate" class="form-control" />
-            <label class="input-group-text" asp-for="ViewTaskName">Задача</label>
-            <input type="text" name="searchType" id="searchTypeViewName" value="@SearchType.Name" hidden />
-            <input type="search" asp-for="ViewTaskName" list="filterTasks" autocomplete="off" class="form-control" />
+            <label class="input-group-text" asp-for="ViewTaskIdentifier">Задача</label>
+            <input type="text" name="searchType" id="searchTypeViewName" value="@SearchType.Identifier" hidden />
+            <input type="search" asp-for="ViewTaskIdentifier" list="filterTasks" autocomplete="off" class="form-control" />
             <datalist id="filterTasks"></datalist>
             <input type="submit" value="Отобразить" class="btn btn-outline-dark" />
         </div>

@@ -8,8 +8,10 @@ namespace Worktime.WEB.ViewModels
         public int TaskId { get; set; }
 
         [Required(ErrorMessage = "Задача необходима!")]
-        public string Name { get; set; } = null!;
-        public string? Description { get; set; }
+        public string Identifier { get; set; } = null!;
+
+        [Required(ErrorMessage = "Заголовок необходим!")]
+        public string Title { get; set; } = null!;
         public double TotalTime { get; set; }
         public bool IsCompleted { get; set; }
         public int LineId { get; set; }
@@ -17,5 +19,6 @@ namespace Worktime.WEB.ViewModels
         public DateTime BeginTime { get; set; }
         public DateTime EndTime { get; set; }
         public double Time { get; set; }
+        public string? Description { get; set; }
     }
 }

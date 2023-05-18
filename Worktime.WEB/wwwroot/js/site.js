@@ -52,24 +52,24 @@ function SendDate() {
     location.href = '?' + new URLSearchParams({ ViewDate: date });
 }
 
-async function SendName() {
-    let nameElement = this;
-    let inputName = nameElement.value;
+async function SendTaskIdentifier() {
+    let taskIdElement = this;
+    let inputName = taskIdElement.value;
     let found = false;
-    let description = nameElement.closest('tr').querySelector('#Description');
-    let listOptions = nameElement.nextElementSibling.options;
+    let title = taskIdElement.closest('tr').querySelector('#Title');
+    let listOptions = taskIdElement.nextElementSibling.options;
     for (let item of listOptions) {
         if (inputName === item.innerText) {
-            description.value = item.dataset.description;
+            title.value = item.dataset.title;
             found = true;
             break;
         }
     }
     if (inputName) {
-        let response = await fetch('/Search/Tasks?' + new URLSearchParams({ name: inputName }));
+        let response = await fetch('/Search/Tasks?' + new URLSearchParams({ search: inputName }));
         let data = await response.json();
         var dataArray = JSON.parse(data);
-        nameElement.nextElementSibling.innerHTML = '';
+        taskIdElement.nextElementSibling.innerHTML = '';
 
         if (JSON.stringify(dataArray) == JSON.stringify({}))
             return;
@@ -80,8 +80,8 @@ async function SendName() {
         for (let key of dataArray) {
             var option = document.createElement('option');
             option.textContent = key.Text;
-            option.setAttribute("data-description", key.DataValue);
-            nameElement.nextElementSibling.appendChild(option);
+            option.setAttribute("data-title", key.DataValue);
+            taskIdElement.nextElementSibling.appendChild(option);
         }
     }
 }
@@ -157,14 +157,14 @@ async function GetSearchList() {
 
 function redirectToTask() {
     let task = this.dataset.task;
-    window.location.replace("/?" + new URLSearchParams({ ViewTaskName: task }));
+    window.location.replace("/?" + new URLSearchParams({ ViewTaskIdentifier: task }));
 }
 
 async function HomeIndexEvents() {
     document.addEventListener('DOMContentLoaded', () => {
         //document.getElementById('ViewDate').addEventListener('change', debounce(SendDate, 1000));
-        document.getElementById('ViewTaskName').addEventListener('input', debounce(GetSearchList, 500));
-        AddEventListenerByName('Name', 'input', debounce(SendName, 1000));
+        document.getElementById('ViewTaskIdentifier').addEventListener('input', debounce(GetSearchList, 500));
+        AddEventListenerByName('Identifier', 'input', debounce(SendTaskIdentifier, 1000));
     });
     SearchFormEvent();
 }

@@ -9,10 +9,10 @@ namespace Worktime.WEB.Models
         public static Result<WTTask> Save(Startup startup, Guid userId, RowViewModel model)
         {
             Result<WTTask> result;
-            var task = startup.ReadAsIEnumerable(userId).FirstOrDefault(x => x.Name == model.Name);
+            var task = startup.ReadAsIEnumerable(userId).FirstOrDefault(x => x.Identifier == model.Identifier);
             if (task != null)
             {
-                result = Update(startup, task, model.Description ?? string.Empty, model.IsCompleted);
+                result = Update(startup, task, model.Title, model.IsCompleted);
             }
             else
             {
@@ -20,17 +20,17 @@ namespace Worktime.WEB.Models
             }
             return result;
         }
-        public static List<WTTask> GetListByName(Startup startup, Guid userId, string name)
+        public static List<WTTask> GetListByIdentifier(Startup startup, Guid userId, string identifier)
         {
-            return startup.ReadAsIEnumerable(userId).Where(x => x.Name.ToLower().Contains(name.ToLower())).ToList();
+            return startup.ReadAsIEnumerable(userId).Where(x => x.Identifier.ToLower().Contains(identifier.ToLower())).ToList();
         }
-        public static List<WTTask> GetListByDescription(Startup startup, Guid userId, string description)
+        public static List<WTTask> GetListByTitle(Startup startup, Guid userId, string title)
         {
-            return startup.ReadAsIEnumerable(userId).Where(x => x.Description?.ToLower().Contains(description.ToLower()) ?? false).ToList();
+            return startup.ReadAsIEnumerable(userId).Where(x => x.Title.ToLower().Contains(title.ToLower())).ToList();
         }
-        private static Result<WTTask> Update(Startup startup, WTTask task, string newDescription, bool completed)
+        private static Result<WTTask> Update(Startup startup, WTTask task, string newTitle, bool completed)
         {
-            task.Description = newDescription;
+            task.Title = newTitle;
             task.Completed = completed;
             var result = startup.Update(task);
             return result;
@@ -39,8 +39,8 @@ namespace Worktime.WEB.Models
         {
             WTTask task = new()
             {
-                Name = newTask.Name,
-                Description = newTask.Description,
+                Identifier = newTask.Identifier,
+                Title = newTask.Title,
                 Completed = newTask.IsCompleted,
                 WTUserId = userId
             };

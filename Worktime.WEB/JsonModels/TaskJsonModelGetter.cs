@@ -4,25 +4,25 @@ namespace Worktime.WEB.JsonModels
 {
     public static class TaskJsonModelGetter
     {
-        public static List<TaskJsonModel> GetListByName(Startup startup, Guid userId, string name, bool isDataValueDescription = false)
+        public static List<TaskJsonModel> GetListByIdentifier(Startup startup, Guid userId, string identifier, bool isDataValueTitle = false)
         {
             List<TaskJsonModel> result = new();
-            var tasks = Models.Task.GetListByName(startup, userId, name);
+            var tasks = Models.Task.GetListByIdentifier(startup, userId, identifier);
             foreach (var task in tasks)
             {
-                string value = isDataValueDescription ?
-                    task.Description ?? string.Empty :
+                string value = isDataValueTitle ?
+                    task.Title :
                     task.Id.ToString();
-                result.Add(new TaskJsonModel(task.Name, value));
+                result.Add(new TaskJsonModel(task.Identifier, value));
             }
             return result;
         }
-        public static List<TaskJsonModel> GetListByDescription(Startup startup, Guid userId, string description)
+        public static List<TaskJsonModel> GetListByTitle(Startup startup, Guid userId, string title)
         {
             List<TaskJsonModel> result = new();
-            var tasks = Models.Task.GetListByDescription(startup, userId, description);
+            var tasks = Models.Task.GetListByTitle(startup, userId, title);
             foreach (var task in tasks)
-                result.Add(new TaskJsonModel(task.Description ?? task.Name, task.Id.ToString()));
+                result.Add(new TaskJsonModel(task.Title, task.Id.ToString()));
             return result;
         }
     }

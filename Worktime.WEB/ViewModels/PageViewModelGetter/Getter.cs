@@ -9,18 +9,18 @@ namespace Worktime.WEB.ViewModels.PageViewModelGetter
         protected DateTime _date;
         protected Guid _userId;
         protected int _taskId;
-        protected readonly string _taskName = string.Empty;
-        public Getter(Startup startup, Guid userId, DateTime? date = null, string taskName = "")
+        protected readonly string _taskIdentifier = string.Empty;
+        public Getter(Startup startup, Guid userId, DateTime? date = null, string taskIdentifier = "")
         {
             _startup = startup;
             _userId = userId;
             _date = date == null ? DateTime.Today : (DateTime)date;
-            if (!string.IsNullOrWhiteSpace(taskName))
+            if (!string.IsNullOrWhiteSpace(taskIdentifier))
             {
-                var task = startup.ReadAsIEnumerable(userId).FirstOrDefault(x => x.Name.ToLower().Equals(taskName.ToLower()));
+                var task = startup.ReadAsIEnumerable(userId).FirstOrDefault(x => x.Identifier.ToLower().Equals(taskIdentifier.ToLower()));
                 if(task != null)
                 {
-                    _taskName = task.Name;
+                    _taskIdentifier = task.Identifier;
                     _taskId = task.Id;
                 }
             }
@@ -36,15 +36,16 @@ namespace Worktime.WEB.ViewModels.PageViewModelGetter
                 {
                     Index = index,
                     TaskId = task.Id,
-                    Name = task.Name,
-                    Description = task.Description,
+                    Identifier = task.Identifier,
+                    Title = task.Title,
                     TotalTime = task.TotalTime,
                     IsCompleted = task.Completed,
                     LineId = line.Id,
                     Date = line.Date.ToLocalTime().Date,
                     BeginTime = line.BeginTime.ToLocalTime(),
                     EndTime = line.EndTime.ToLocalTime(),
-                    Time = line.Time
+                    Time = line.Time,
+                    Description = line.Description
                 });
                 index++;
             }
@@ -60,7 +61,7 @@ namespace Worktime.WEB.ViewModels.PageViewModelGetter
 
             double totalTime = GetTotalTime();
             newRow = GetNewRow(date, newRow);
-            return new ViewModels.PageViewModel(newRow, rows, totalTime, date, _taskName);
+            return new ViewModels.PageViewModel(newRow, rows, totalTime, date, _taskIdentifier);
         }
         private RowViewModel GetNewRow(DateTime date, RowViewModel? newRow)
         {

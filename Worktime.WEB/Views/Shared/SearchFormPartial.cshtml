@@ -1,10 +1,10 @@
 ﻿<form method="post" asp-controller="Search" asp-action="List" id="searchForm" class="background--white form-inline search--shadow">
     <div class="input-group mb-4 justify-content-center">
         <div class="btn-group" role="group">
-            <input type="radio" class="btn-check" name="searchType" id="searchTypeName" autocomplete="off" value="@SearchType.Name" checked>
-            <label class="btn btn-outline-dark" for="searchTypeName">Задачи</label>
-            <input type="radio" class="btn-check" name="searchType" id="searchTypeDescription" autocomplete="off" value="@SearchType.Description">
-            <label class="btn btn-outline-dark rounded-0" for="searchTypeDescription">Описания</label>
+            <input type="radio" class="btn-check" name="searchType" id="searchTypeIdentifier" autocomplete="off" value="@SearchType.Identifier" checked>
+            <label class="btn btn-outline-dark" for="searchTypeIdentifier">Задачи</label>
+            <input type="radio" class="btn-check" name="searchType" id="searchTypeTitle" autocomplete="off" value="@SearchType.Title">
+            <label class="btn btn-outline-dark rounded-0" for="searchTypeTitle">Описания</label>
         </div>
         <input type="search" id="searchRequest" name="search" list="searchDatalist" placeholder="Поиск" autocomplete="off" class="form-control col__min-width--150" />
         <datalist id="searchDatalist"></datalist>

@@ -16,7 +16,7 @@ namespace Worktime.WEB.ViewModels
 
             var tasks = GetTasks(startup, userId, searchType, search);
             foreach (var task in tasks)
-                result.Add(new SearchTaskViewModel(task.Id, task.Name, task.Description ?? string.Empty));
+                result.Add(new SearchTaskViewModel(task.Id, task.Identifier, task.Title));
 
             return result;
         }
@@ -25,11 +25,11 @@ namespace Worktime.WEB.ViewModels
             List<WTTask> tasks = new();
             switch (searchType)
             {
-                case SearchType.Name:
-                    tasks = Models.Task.GetListByName(startup, userId, search);
+                case SearchType.Identifier:
+                    tasks = Models.Task.GetListByIdentifier(startup, userId, search);
                     break;
-                case SearchType.Description:
-                    tasks = Models.Task.GetListByDescription(startup, userId, search);
+                case SearchType.Title:
+                    tasks = Models.Task.GetListByTitle(startup, userId, search);
                     break;
             }
             return tasks;

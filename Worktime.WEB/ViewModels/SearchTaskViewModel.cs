@@ -3,13 +3,13 @@
     public class SearchTaskViewModel
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public SearchTaskViewModel(int id, string name, string description)
+        public string Identifier { get; set; }
+        public string Title { get; set; }
+        public SearchTaskViewModel(int id, string identifier, string title)
         {
             Id = id;
-            Name = name;
-            Description = description;
+            Identifier = identifier;
+            Title = title;
         }
     }
 }

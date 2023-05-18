@@ -8,7 +8,7 @@ namespace Worktime.WEB.ViewModels.PageViewModelGetter
         //private readonly int _taskId;
         private readonly bool _onDate;
         private double _totalTime;
-        public FromTask(Startup startup, Guid userId, string taskName, DateTime? date = null) :base(startup, userId, date, taskName)
+        public FromTask(Startup startup, Guid userId, string taskIdentifier, DateTime? date = null) :base(startup, userId, date, taskIdentifier)
         {
             //_taskId = taskId;
             _onDate = date != null;

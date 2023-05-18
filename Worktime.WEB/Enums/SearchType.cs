@@ -2,7 +2,7 @@
 {
     public enum SearchType
     {
-        Name,
-        Description
+        Identifier,
+        Title
     }
 }

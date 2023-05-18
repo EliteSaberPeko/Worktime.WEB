@@ -27,12 +27,12 @@ namespace Worktime.WEB.Controllers
             _startup = startup;
         }
 
-        public async Task<IActionResult> Index(DateTime? ViewDate = null, string ViewTaskName = "")
+        public async Task<IActionResult> Index(DateTime? ViewDate = null, string ViewTaskIdentifier = "")
         {
             var user = await GetCurrentUserAsync();
-            PageViewModel model = string.IsNullOrWhiteSpace(ViewTaskName) ?
+            PageViewModel model = string.IsNullOrWhiteSpace(ViewTaskIdentifier) ?
                 new ViewModels.PageViewModelGetter.OnDate(_startup, user.WorktimeId, ViewDate ?? DateTime.Today).Get() :
-                new ViewModels.PageViewModelGetter.FromTask(_startup, user.WorktimeId, ViewTaskName, ViewDate).Get();
+                new ViewModels.PageViewModelGetter.FromTask(_startup, user.WorktimeId, ViewTaskIdentifier, ViewDate).Get();
             return View(model);
         }
 
@@ -59,7 +59,10 @@ namespace Worktime.WEB.Controllers
                 var state = ModelState.Where(x => x.Value?.ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid);
                 foreach(var (name, message) in state.Select(x => (Name: x.Key, Message: x.Value?.Errors.FirstOrDefault()?.ErrorMessage ?? string.Empty)))
                 {
-                    errors.Add(new ErrorJsonModel(name, message));
+                    if (name == "Date")
+                        errors.Add(new ErrorJsonModel(name, "Необходима корректная дата!"));
+                    else
+                        errors.Add(new ErrorJsonModel(name, message));
                 }
                 Response.StatusCode = (int)HttpStatusCode.PartialContent;
                 string json = JsonSerializer.Serialize(errors);

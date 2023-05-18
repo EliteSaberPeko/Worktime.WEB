@@ -34,8 +34,8 @@ namespace Worktime.WEB.Controllers
             SearchListViewModel model = new(_startup, user.WorktimeId, searchType, search);
             if (model.Tasks.Count == 1)
             {
-                string ViewTaskName = model.Tasks.First().Name;
-                return RedirectToAction("Index", "Home", new { ViewTaskName });
+                string ViewTaskIdentifier = model.Tasks.First().Identifier;
+                return RedirectToAction("Index", "Home", new { ViewTaskIdentifier });
             }
             return View(model);
         }
@@ -48,11 +48,11 @@ namespace Worktime.WEB.Controllers
             List<TaskJsonModel> result;
             switch (searchType)
             {
-                case SearchType.Name:
-                    result = TaskJsonModelGetter.GetListByName(_startup, user.WorktimeId, search);
+                case SearchType.Identifier:
+                    result = TaskJsonModelGetter.GetListByIdentifier(_startup, user.WorktimeId, search);
                     break;
-                case SearchType.Description:
-                    result = TaskJsonModelGetter.GetListByDescription(_startup, user.WorktimeId, search);
+                case SearchType.Title:
+                    result = TaskJsonModelGetter.GetListByTitle(_startup, user.WorktimeId, search);
                     break;
                 default:
                     return StatusCode((int)HttpStatusCode.InternalServerError, "Search type was not defined!");
@@ -62,12 +62,12 @@ namespace Worktime.WEB.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Tasks(string name)
+        public async Task<IActionResult> Tasks(string search)
         {
-            name ??= string.Empty;
+            search ??= string.Empty;
             var user = await GetCurrentUserAsync();
 
-            var result = TaskJsonModelGetter.GetListByName(_startup, user.WorktimeId, name, true);
+            var result = TaskJsonModelGetter.GetListByIdentifier(_startup, user.WorktimeId, search, true);
 
             var json = JsonSerializer.Serialize(result);
             return new JsonResult(json);
