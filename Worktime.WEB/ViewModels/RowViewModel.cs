@@ -16,7 +16,13 @@ namespace Worktime.WEB.ViewModels
         public bool IsCompleted { get; set; }
         public int LineId { get; set; }
         public DateTime Date { get; set; }
+
+        [DataType(DataType.Time)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:HH:mm}")]
         public DateTime BeginTime { get; set; }
+
+        [DataType(DataType.Time)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:HH:mm}")]
         public DateTime EndTime { get; set; }
         public double Time { get; set; }
         public string? Description { get; set; }
